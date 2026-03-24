@@ -1,0 +1,33 @@
+version: 2
+
+models:
+  - name: fct_cases
+    description: "Customer service fact. Grain: one row per case. Includes SLA classification."
+    columns:
+      - name: case_key
+        tests: [unique, not_null]
+      - name: case_id
+        tests: [unique, not_null]
+      - name: account_key
+        tests:
+          - relationships:
+              to: ref('dim_accounts')
+              field: account_key
+              severity: warn
+      - name: owner_key
+        tests:
+          - relationships:
+              to: ref('dim_users')
+              field: user_key
+              severity: warn
+      - name: priority
+        tests:
+          - accepted_values:
+              values: ['Low', 'Medium', 'High', 'Critical']
+              severity: warn
+      - name: sla_status
+        tests:
+          - accepted_values:
+              values: ['Within SLA', 'Breached SLA', 'Open']
+      - name: isclosed
+        tests: [not_null]

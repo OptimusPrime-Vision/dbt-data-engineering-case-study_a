@@ -1,0 +1,40 @@
+version: 2
+
+seeds:
+  - name: stage_pipeline_order
+    description: "Canonical Salesforce stage ordering and category labels."
+    config:
+      column_types:
+        stage_order: integer
+        is_closed: boolean
+        is_won: boolean
+    columns:
+      - name: stage_name
+        tests: [unique, not_null]
+      - name: stage_order
+        tests: [unique, not_null]
+      - name: stage_category
+        tests:
+          - accepted_values:
+              values: ['Early', 'Mid', 'Late', 'Closed']
+
+  - name: sla_thresholds
+    description: "SLA resolution targets (hours) by priority. Used in int_case_resolution."
+    config:
+      column_types:
+        response_target_hours: integer
+        resolution_target_hours: integer
+        escalation_target_hours: integer
+    columns:
+      - name: priority
+        tests:
+          - unique
+          - not_null
+          - accepted_values:
+              values: ['Critical', 'High', 'Medium', 'Low']
+
+  - name: industry_segment_mapping
+    description: "Maps Salesforce industry picklist to segments and groups."
+    columns:
+      - name: industry
+        tests: [unique, not_null]

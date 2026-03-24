@@ -1,0 +1,11 @@
+stage_name,stage_order,is_closed,is_won,stage_category
+Prospecting,1,false,false,Early
+Qualification,2,false,false,Early
+Needs Analysis,3,false,false,Mid
+Value Proposition,4,false,false,Mid
+Id. Decision Makers,5,false,false,Mid
+Perception Analysis,6,false,false,Late
+Proposal/Price Quote,7,false,false,Late
+Negotiation/Review,8,false,false,Late
+Closed Won,9,true,true,Closed
+Closed Lost,10,true,false,Closed

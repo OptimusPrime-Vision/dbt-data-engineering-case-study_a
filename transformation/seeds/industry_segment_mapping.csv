@@ -1,0 +1,21 @@
+industry,industry_segment,industry_group
+Agriculture,Agriculture,Primary
+Banking,Financial Services,Financial
+Biotechnology,Life Sciences,Healthcare
+Communications,Technology,Technology
+Construction,Construction,Industrial
+Consulting,Professional Services,Services
+Education,Education,Public Sector
+Electronics,Technology,Technology
+Energy,Energy,Industrial
+Finance,Financial Services,Financial
+Government,Government,Public Sector
+Healthcare,Healthcare,Healthcare
+Insurance,Financial Services,Financial
+Media,Media,Consumer
+Retail,Retail,Consumer
+Technology,Technology,Technology
+Telecommunications,Technology,Technology
+Transportation,Logistics,Industrial
+Utilities,Energy,Industrial
+Other,Other,Other

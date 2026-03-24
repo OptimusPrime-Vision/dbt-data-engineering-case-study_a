@@ -1,0 +1,77 @@
+version: 2
+
+models:
+  - name: int_opportunities_enriched
+    description: >
+      Opportunities joined with account and owner context. Includes derived
+      deal-health fields (deal_size_tier, deal_status, days_to_close,
+      weighted_amount) and window metrics (running pipeline per owner,
+      deal rank within account, LAG on previous deal amount).
+    columns:
+      - name: opportunity_id
+        description: "Primary key."
+        tests: [unique, not_null]
+      - name: accountid
+        tests: [not_null]
+      - name: ownerid
+        tests: [not_null]
+      - name: deal_size_tier
+        tests:
+          - accepted_values:
+              values: ['Enterprise', 'Mid-Market', 'SMB', 'Micro']
+      - name: deal_status
+        tests:
+          - accepted_values:
+              values: ['Won', 'Lost', 'Overdue', 'Open']
+
+  - name: int_accounts_with_metrics
+    description: >
+      Accounts enriched with rolled-up opportunity, case, and contact KPIs.
+      Includes account health tier classification.
+    columns:
+      - name: account_id
+        description: "Primary key."
+        tests: [unique, not_null]
+      - name: account_health_tier
+        tests:
+          - accepted_values:
+              values: ['Platinum', 'Gold', 'Silver', 'Bronze']
+
+  - name: int_sales_rep_metrics
+    description: >
+      Sales reps enriched with pipeline, revenue, and activity metrics.
+      Revenue quartile computed via NTILE window function.
+    columns:
+      - name: user_id
+        description: "Primary key."
+        tests: [unique, not_null]
+      - name: revenue_quartile
+        tests:
+          - accepted_values:
+              values: [1, 2, 3, 4]
+              quote: false
+
+  - name: int_lead_funnel
+    description: >
+      Leads enriched with funnel stage, conversion timing, and attributes.
+    columns:
+      - name: lead_id
+        description: "Primary key."
+        tests: [unique, not_null]
+      - name: funnel_stage
+        tests:
+          - accepted_values:
+              values: ['1 - Other', '2 - Open', '3 - Working', '4 - Converted']
+
+  - name: int_case_resolution
+    description: >
+      Cases enriched with resolution hours, SLA status (joined from seed),
+      and field-change counts from case history.
+    columns:
+      - name: case_id
+        description: "Primary key."
+        tests: [unique, not_null]
+      - name: sla_status
+        tests:
+          - accepted_values:
+              values: ['Within SLA', 'Breached SLA', 'Open']

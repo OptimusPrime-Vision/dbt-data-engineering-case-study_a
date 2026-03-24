@@ -1,0 +1,62 @@
+version: 2
+
+models:
+  - name: fct_opportunities
+    description: "Core sales fact. Grain: one row per opportunity."
+    columns:
+      - name: opportunity_key
+        tests: [unique, not_null]
+      - name: opportunity_id
+        tests: [unique, not_null]
+      - name: account_key
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_accounts')
+              field: account_key
+      - name: owner_key
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_users')
+              field: user_key
+      - name: close_date_id
+        tests:
+          - relationships:
+              to: ref('dim_date')
+              field: date_id
+              severity: warn
+      - name: deal_size_tier
+        tests:
+          - accepted_values:
+              values: ['Enterprise', 'Mid-Market', 'SMB', 'Micro']
+      - name: deal_status
+        tests:
+          - accepted_values:
+              values: ['Won', 'Lost', 'Overdue', 'Open']
+      - name: iswon
+        tests: [not_null]
+      - name: isclosed
+        tests: [not_null]
+
+  - name: fct_leads
+    description: "Lead funnel fact. Grain: one row per lead."
+    columns:
+      - name: lead_key
+        tests: [unique, not_null]
+      - name: lead_id
+        tests: [unique, not_null]
+      - name: funnel_stage
+        tests:
+          - accepted_values:
+              values: ['1 - Other', '2 - Open', '3 - Working', '4 - Converted']
+      - name: isconverted
+        tests: [not_null]
+
+  - name: fct_daily_pipeline_snapshot
+    description: "Incremental daily pipeline waterfall. Grain: one row per opportunity per snapshot date."
+    columns:
+      - name: snapshot_date
+        tests: [not_null]
+      - name: opportunity_id
+        tests: [not_null]

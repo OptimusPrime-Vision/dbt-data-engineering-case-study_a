@@ -1,5 +1,3 @@
-
-
 with source as (
 
     select * from {{ source('salesforce', 'case_history_2') }}

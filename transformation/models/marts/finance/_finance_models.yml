@@ -1,0 +1,16 @@
+version: 2
+
+models:
+  - name: fct_opportunity_line_items
+    description: "Revenue fact at pricebook entry grain. Enables product-mix analysis."
+    columns:
+      - name: line_item_key
+        tests: [unique, not_null]
+      - name: pricebook_entry_id
+        tests: [unique, not_null]
+      - name: product_key
+        tests:
+          - relationships:
+              to: ref('dim_products')
+              field: product_key
+              severity: warn
